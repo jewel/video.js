@@ -1417,16 +1417,22 @@ vjs.Player.prototype.listenForUserActivity = function(){
     if (document.mozCancelFullScreen) {
       prefix = 'moz';
       requestFS.isFullScreen = prefix + 'FullScreen';
+      requestFS.eventName = prefix + 'fullscreenchange';
+    } else if (document.msExitFullscreen) {
+      requestFS.cancelFn = 'msExitFullscreen';
+      requestFS.isFullScreen = 'msFullscreenElement';
+      requestFS.requestFn = 'msRequestFullscreen';
+      requestFS.eventName = 'MSFullscreenChange';
     } else {
       prefix = 'webkit';
       requestFS.isFullScreen = prefix + 'IsFullScreen';
+      requestFS.eventName = prefix + 'fullscreenchange';
     }
 
     if (div[prefix + 'RequestFullScreen']) {
       requestFS.requestFn = prefix + 'RequestFullScreen';
       requestFS.cancelFn = prefix + 'CancelFullScreen';
     }
-    requestFS.eventName = prefix + 'fullscreenchange';
   }
 
   if (document[requestFS.cancelFn]) {
